@@ -12,18 +12,11 @@ const HttpError = require("./models/http-error");
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(cors());
+
+app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
-
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
 
 app.use("/api/places", placesRoutes);
 app.use("/api/users", usersRoutes);
