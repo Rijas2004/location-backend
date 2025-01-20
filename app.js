@@ -18,6 +18,9 @@ app.use(
   })
 );
 
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
 

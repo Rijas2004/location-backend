@@ -20,8 +20,5 @@
       "src": "/(.*)",
       "dest": "app.js"
     }
-  ],
-  "experimental": {
-    "payloadSizeLimit": "50mb"
-  }
+  ]
 }
