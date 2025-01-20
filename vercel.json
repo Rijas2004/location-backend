@@ -21,7 +21,7 @@
       "dest": "app.js"
     }
   ],
-  "server": {
-    "bodySize": 50
+  "experimental": {
+    "payloadSizeLimit": "50mb"
   }
 }
