@@ -28,8 +28,9 @@ app.use("/api/places", placesRoutes);
 app.use("/api/users", usersRoutes);
 
 app.use((error, req, res, next) => {
-  console.error(error);
-  res.status(500).json({ message: "An error occurred!", error: error.message });
+  console.error("Error:", error);
+  console.error("Error Stack:", error.stack);
+  res.status(500).json({ message: "An error occurred!" });
 });
 
 app.use((req, res, next) => {
