@@ -20,6 +20,7 @@ const getUsers = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
+  console.log(req.file);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ message: "Invalid inputs passed" });
