@@ -49,11 +49,13 @@ const signup = async (req, res, next) => {
       process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
+
     res
       .status(201)
       .json({ userId: createdUser.id, email: createdUser.email, token: token });
   } catch (err) {
-    return res.status(500).json({ message: "Error creating user" });
+    console.error(err);
+    return res.status(500).json({ message: err.message });
   }
 };
 
