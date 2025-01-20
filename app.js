@@ -29,7 +29,7 @@ app.use("/api/users", usersRoutes);
 
 app.use((error, req, res, next) => {
   console.error(error);
-  res.status(500).json({ message: "An error occurred!" });
+  res.status(500).json({ message: "An error occurred!", error: error.message });
 });
 
 app.use((req, res, next) => {
