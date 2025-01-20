@@ -21,7 +21,7 @@
       "dest": "app.js"
     }
   ],
-  "limits": {
+  "server": {
     "bodySize": 50
   }
 }
