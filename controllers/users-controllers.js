@@ -20,7 +20,6 @@ const getUsers = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
-  console.log(req.file);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ message: "Invalid inputs passed" });
@@ -35,10 +34,17 @@ const signup = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
+    let imagePath;
+    if (req.file && req.file.path) {
+      imagePath = req.file.path;
+    } else {
+      imagePath = null;
+    }
+
     const createdUser = new User({
       name,
       email,
-      image: req.file.path,
+      image: imagePath,
       password: hashedPassword,
       places: [],
     });
@@ -56,7 +62,7 @@ const signup = async (req, res, next) => {
       .json({ userId: createdUser.id, email: createdUser.email, token: token });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Error creating user" });
   }
 };
 
