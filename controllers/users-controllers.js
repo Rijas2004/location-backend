@@ -16,7 +16,9 @@ const getUsers = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
+  res.json({
+    users: users.map((user) => user.toObject({ getters: true })),
+  });
 };
 
 const signup = async (req, res, next) => {
@@ -27,7 +29,7 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password } = req.body;
+  const { name, email, password, imageUrl } = req.body;
 
   let existingUser;
   try {
@@ -62,7 +64,7 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image: req.file.path,
+    imageUrl,
     password: hashedPassword,
     places: [],
   });
@@ -81,7 +83,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email },
-      "supersecret_dont_share",
+      process.env.JWT_KEY || "supersecret_dont_share",
       { expiresIn: "1h" }
     );
   } catch (err) {
@@ -92,9 +94,12 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  res
-    .status(201)
-    .json({ userId: createdUser.id, email: createdUser.email, token: token });
+  res.status(201).json({
+    userId: createdUser.id,
+    email: createdUser.email,
+    imageUrl: createdUser.imageUrl,
+    token: token,
+  });
 };
 
 const login = async (req, res, next) => {
@@ -143,7 +148,7 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      process.env.JWT_KEY,
+      process.env.JWT_KEY || "supersecret_dont_share",
       { expiresIn: "1h" }
     );
   } catch (err) {
@@ -157,6 +162,7 @@ const login = async (req, res, next) => {
   res.json({
     userId: existingUser.id,
     email: existingUser.email,
+    imageUrl: existingUser.imageUrl,
     token: token,
   });
 };
